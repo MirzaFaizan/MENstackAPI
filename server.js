@@ -16,7 +16,6 @@ mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.url).catch((error) => {
     console.log("Exception \n"+error);
   });
-
 mongoose.connection.on('error',function(){
     console.log("Could not connect to DB, exiting now ...");
     process.exit();
