@@ -40,13 +40,33 @@ exports.findAll = function(req , res){
                     message: "Some error Occured while fetching all users"
                 }
             );
+        } else{
+            res.send(users);
         }
     });
 };
 
 //Find a single user with user id
 exports.findOne = function(req , res){
-
+    User.findById(req.params.userId,function(err,user){
+        if(err){
+            console.log(err);
+            if(err.kind === 'ObjectId'){
+                return res.status(404).send({
+                    message: "User not found with Id "+req.params.userId
+                });
+            }
+            return res.status(500).send({
+                message: "Error retriving user with id "+req.params.userId
+            });
+        }
+        if(!user){
+            return res.status(404).send({
+                message: "User not found with Id "+req.params.userId
+            });
+        }
+        res.send(user);
+    });
 };
 
 //update a user with userID
