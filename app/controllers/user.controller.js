@@ -109,5 +109,25 @@ exports.update = function(req , res){
 
 //delete a user with userID
 exports.delete = function(req , res){
-
+    User.findByIdAndRemove(req.params.userId,function(err,user){
+        if(err){
+            console.log(err);
+            if(err.kind === 'ObjectId'){
+                return res.status(404).send({
+                    message: "User not found with Id "+req.params.userId
+                });
+            }
+            return res.status(500).send({
+                message: "Error retriving user with id "+req.params.userId
+            });
+        }
+        if(!user){
+            return res.status(404).send({
+                message: "User not found with Id "+req.params.userId
+            });
+        }
+        res.send({
+            message: "User deleted Successfully!"
+        });
+    });
 };
